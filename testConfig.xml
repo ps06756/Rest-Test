@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <configuration>
+	<globalLogin>true</globalLogin>
 	<tests>
 		<login>
+			<usernameKey>email</usernameKey>
+			<passwordKey>password</passwordKey>
 			<username>ps06756@gmail.com</username>
 			<password>helloworld</password>
 			<loginUrl>http://edutab.com/edutab/authentication/login</loginUrl>
@@ -14,6 +17,8 @@
 			<loginRequired>true</loginRequired>
 			<key>email</key>
 			<value>ps06756@gmail.com</value>
+			<key>studentId</key>
+			<value>1</value>
 			<comment>Test which should get ID correctly</comment>
 			<queryOrForm>true</queryOrForm>
 			<dataType>String</dataType>

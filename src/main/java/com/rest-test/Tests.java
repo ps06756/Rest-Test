@@ -46,7 +46,10 @@ class Tests {
 
 		try(CloseableHttpClient client = HttpClients.createDefault(); CloseableHttpClient loginClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build()) {
 
+
 			XMLConfiguration xmlConfiguration = configuration.xml(filePath);
+			Static.globalLogin = xmlConfiguration.getBoolean("globalLogin");
+			System.out.println("globalLogin = " + Static.globalLogin);
 			List<String> testName = xmlConfiguration.getList(String.class, "tests.test.name");
 			List<String> testTypes = xmlConfiguration.getList(String.class, "tests.test.type");
 			List<String> testHost = xmlConfiguration.getList(String.class, "tests.test.host");
@@ -61,14 +64,25 @@ class Tests {
 			List<Integer> expectedStatusCode = xmlConfiguration.getList(Integer.class, "tests.test.expectedStatusCode");
 			List<Integer> paramsCount = xmlConfiguration.getList(Integer.class, "tests.test.count");
 
+			String usernameKey = xmlConfiguration.getString("tests.login.usernameKey");
+			String passwordKey = xmlConfiguration.getString("tests.login.passwordKey");
 			String username = xmlConfiguration.getString("tests.login.username");
 			String password = xmlConfiguration.getString("tests.login.password");
 			String loginUrl = xmlConfiguration.getString("tests.login.loginUrl");
 
-			int loginCode = Tests.makeLoginAttempt(loginClient, loginUrl, username, password);
-			if (loginCode != 200) {
-				System.out.println("Login failed!!");
-				return;
+			if (Static.globalLogin) {
+				int loginCode = Tests.makeLoginAttempt(loginClient, loginUrl, username, password, usernameKey, passwordKey);
+				if (loginCode != 200) {
+					System.out.println("Login failed! status_code = " + loginCode + " ");
+					return;
+				}
+			}
+
+			for(int i = 0; i < testLoginRequired.size(); i++) {
+				if (Static.globalLogin == false && testLoginRequired.get(i) == true) {
+					System.out.println("Invalid configuration! globalLoginRequired is false, while loginRequired for some tests is true");	
+					return;
+				}
 			}
 
 			int cnt = 0;
@@ -107,13 +121,13 @@ class Tests {
 		}
 	}
 
-	public static int makeLoginAttempt(CloseableHttpClient client , String url, String email, String password) throws UnsupportedEncodingException, IOException {
+	public static int makeLoginAttempt(CloseableHttpClient client , String url, String email, String password, String usernameKey, String passwordKey) throws UnsupportedEncodingException, IOException {
 
 		HttpPost request = new HttpPost(url);
 		HttpEntity entity = null;
 
 		if (email != null && password != null)
-			entity = MultipartEntityBuilder.create().addTextBody("email", email).addTextBody("password", password).build();
+			entity = MultipartEntityBuilder.create().addTextBody(usernameKey, email).addTextBody(passwordKey, password).build();
 
 		if (entity != null)
 			request.setEntity(entity);

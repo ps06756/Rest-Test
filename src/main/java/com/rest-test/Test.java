@@ -107,7 +107,7 @@ class Test {
 				return false;
 			}
 		}
-		catch( URISyntaxException | IOException ex) {
+		catch( Exception ex) {
 			return false;
 		}
 	}
