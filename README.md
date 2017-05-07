@@ -37,8 +37,8 @@ This will start running the tests as specified in the config file.
 			<loginRequired>true</loginRequired>
 			<key>email</key>
 			<value>ps06756@gmail.com</value>
-      <key>studentId</key>
-      <value>1</value>
+      			<key>studentId</key>
+      			<value>1</value>
 			<comment>Test which should get ID correctly</comment>
 			<queryOrForm>true</queryOrForm>
 			<dataType>String</dataType>
@@ -122,6 +122,8 @@ The expected http status code of the above test is 200 and the expected content 
 10) expectedOutput : Expected Output from the test (in case data type is 'None' , you can write 2 here)
 11) expectedStatusCode : Expected status code from the test.
 12) count : No of key value pairs for this test.
+
+Supplying all these parameters for each test is compulsory.
 
 
 
