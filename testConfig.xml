@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<configuration>
+	<tests>
+		<login>
+			<username>ps06756@gmail.com</username>
+			<password>helloworld</password>
+			<loginUrl>http://edutab.com/edutab/authentication/login</loginUrl>
+		</login>
+		<test>
+			<name>Student ID TEST (Correct)</name>
+			<type>GET</type>
+			<url>/edutab/student/id</url>
+			<host>edutab.com</host>
+			<loginRequired>true</loginRequired>
+			<key>email</key>
+			<value>ps06756@gmail.com</value>
+			<comment>Test which should get ID correctly</comment>
+			<queryOrForm>true</queryOrForm>
+			<dataType>String</dataType>
+			<expectedOutput>1</expectedOutput>
+			<expectedStatusCode>200</expectedStatusCode>
+			<count>1</count>
+		</test>
+		<test>
+			<name>Student ID TEST (Incorrect)</name>
+			<type>GET</type>
+			<url>/edutab/student/id</url>
+			<host>edutab.com</host>
+			<loginRequired>false</loginRequired>
+			<key>email</key>
+			<value>ps06756@gmail.com</value>
+			<comment>Test which should not get ID correctly</comment>
+			<queryOrForm>true</queryOrForm>
+			<dataType>None</dataType>
+			<expectedOutput>1</expectedOutput>
+			<expectedStatusCode>401</expectedStatusCode>
+			<count>1</count>
+		</test>
+		<test>
+			<name>Student Info (correct Id, without login)</name>
+			<type>GET</type>
+			<url>/edutab/student/info</url>
+			<host>edutab.com</host>
+			<loginRequired>false</loginRequired>
+			<key>studentId</key>
+			<value>1</value>
+			<comment>Test which should not get info correctly</comment>
+			<queryOrForm>true</queryOrForm>
+			<dataType>None</dataType>
+			<expectedOutput>{}</expectedOutput>
+			<expectedStatusCode>401</expectedStatusCode>
+			<count>1</count>
+		</test>
+		<test>
+			<name>Student Info (correct Id, with login)</name>
+			<type>GET</type>
+			<url>/edutab/student/info</url>
+			<host>edutab.com</host>
+			<loginRequired>true</loginRequired>
+			<key>studentId</key>
+			<value>1</value>
+			<comment>Test which should get info correctly</comment>
+			<queryOrForm>true</queryOrForm>
+			<dataType>JSON</dataType>
+			<expectedOutput>{"first_name" : "Pratik", "last_name":"Singhal","middle_name":null,"studentId":"1","notification":[]", courseId":"1","email":"ps06756@gmail.com"}</expectedOutput>
+			<expectedStatusCode>200</expectedStatusCode>
+			<count>1</count>
+		</test>
+	</tests>
+</configuration>
+
